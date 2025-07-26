@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+
 const userSchema = mongoose.Schema({
     name :{
         type : String,
@@ -36,12 +37,13 @@ const userSchema = mongoose.Schema({
     }
 },{ timestamps : true})
 
-const User = mongoose.model("User" , userSchema);
+
 
 // pre fucntion to hash password for any modification
-
-userSchema.pre("save" , async(next)=>{
-    if(!this.isModified("password"))
+// this case where we cannot use arrow funnbecause this keyword do not act good
+// to get surround varible preffered function keyword
+userSchema.pre("save" , async function(next){
+    if(!this.isModified('password'))
         { 
             return next();}
 
@@ -51,12 +53,13 @@ userSchema.pre("save" , async(next)=>{
     next();
    } catch (error) {
     console.log(error);
-    
+    next(error);
    }
 })
 
 // pre method for check password 
-userSchema.methods.camparePass = async ( password)=>{
+userSchema.methods.camparePass = async function ( password){
     return bcrypt.compare(password , this.password);
 }
+const User = mongoose.model("User" , userSchema);
 export default User;
