@@ -79,6 +79,7 @@ export const toggledFeatuted = async(req,res)=>{
         if(product){
             product.isFeatured = !product.isFeatured;
             await product.save(); // check is ti working
+            await updateFeaturedProductsCache();
             res.json(product)
 
         }else{
@@ -86,5 +87,17 @@ export const toggledFeatuted = async(req,res)=>{
         }
     } catch (error) {
          return res.status(500).json({ success : "false" , message: error.message});
+    }
+}
+
+async function  updateFeaturedProductsCache() {
+    try {
+        const featuredProducts = await Product.find({isFeatured : true}).lean();
+        await redis.set("feature_product" ,JSON.stringify(featuredProducts));
+
+    } catch (error) {
+        console.log("erroer while update in cache");
+        
+        return res.status(500).json({ success : "false" , message: error.message});
     }
 }

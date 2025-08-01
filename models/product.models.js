@@ -14,11 +14,11 @@ const productSchema = new mongoose.Schema({
         min :0,
         required :["true" , "product name is missing"]
     },
-    quntity : {
-        type : Number,
-        min :0,
-        required :["true" , "quntity missing is missing"]
-    },
+    // quntity : {
+    //     type : Number,
+    //     min :0,
+    //     required :["true" , "quntity missing is missing"]
+    // },
     price : {
         type : Number,
         min :0,

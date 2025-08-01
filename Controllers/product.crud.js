@@ -3,7 +3,7 @@ import Product from "../models/product.models.js";
 
 export const createProduct = async(req,res)=>{
     try {
-        const { name , description , price , quntity , image  , category } = req.body;
+        const { name , description , price  , image  , category } = req.body;
         let cloudinaryResponse = null;
         if(image){
             cloudinaryResponse = await cloudinary.uploader.upload(image , { folder :"products"})
@@ -12,7 +12,6 @@ export const createProduct = async(req,res)=>{
             name,
             description,
             price,
-            quntity,
             image : cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url :"",
             category
         });
